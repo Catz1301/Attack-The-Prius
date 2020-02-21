@@ -33,4 +33,3 @@ public:
 	bool isOffScreen(sf::RenderWindow &target);
 	void setSpeed(int newSpeed);
 };
-
