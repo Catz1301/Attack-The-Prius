@@ -180,7 +180,6 @@ int main() {
 		}
 		
 		//priiScore.setString("Score: " + );
-		prii[2].move(dt.asSeconds());
 		window.draw(muskHead);
 		window.display();
 		if (score % 10 == 0 && score != 0) {
@@ -215,8 +214,8 @@ void removePrius(std::vector<Prius> &vect, size_t pos) {
 }
 
 void makeNewPrius(std::vector<Prius> &vect, int q) {
-	if (q > 3)
-		q = 3;
+	if (q > 2)
+		q = 2;
 	for (int i = 0; i < q; i++) {
 		float x = 100; //rand() % window.getSize().x + 100;
 		float y = rand() % window.getSize().y;
@@ -226,8 +225,12 @@ void makeNewPrius(std::vector<Prius> &vect, int q) {
 
 		if (y > window.getSize().y - priusTransparentTex.getSize().y)
 			y -= priusTransparentTex.getSize().y;
-
-		vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size));
+		if (rand() % 2 == 0) {
+			vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, true));
+		}
+		else {
+			vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, false));
+		}
 	}
 
 	/*prii[0].setColor(Color::Blue);
