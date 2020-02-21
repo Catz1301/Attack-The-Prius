@@ -30,7 +30,7 @@ public:
 	void update(float dt);
 	// Moves the Prius to the direction it's facing
 	void move(float dt);
-	bool isOffScreen();
+	bool isOffScreen(sf::RenderWindow &target);
 	void setSpeed(int newSpeed);
 };
 
