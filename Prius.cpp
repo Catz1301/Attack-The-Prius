@@ -84,12 +84,26 @@ void Prius::update(float dt)
 void Prius::move(float dt)
 {
 	// TODO: Add your implementation code here.
-	priusSprite.move(-100*dt, 0);
+	if (facingLeft)
+		priusSprite.move((-1*speed)*dt, 0);
+	else
+		priusSprite.move((1*speed)*dt, 0);
+
 }
 
 
-bool Prius::isOffScreen()
+bool Prius::isOffScreen(sf::RenderWindow &target)
 {
 	// TODO: Add your implementation code here.
-	return (priusSprite.getPosition().x + priusSprite.getGlobalBounds().width < -10);
+	if (facingLeft == true)
+		return (priusSprite.getPosition().x + priusSprite.getGlobalBounds().width < -10);
+	else if (facingLeft == false)
+		return (priusSprite.getPosition().x > target.getSize().x + 10)
+	else
+		return false;
+}
+
+void Prius::setSpeed(int newSpeed)
+{
+	speed = newSpeed;
 }
