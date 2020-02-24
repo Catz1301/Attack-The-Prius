@@ -5,8 +5,8 @@
 class Prius
 {
 public:
-	Prius(sf::Texture &texture, float x, float y, float sizeX, float sizeY, bool isBad = false, bool isFacingLeft = true, int speed = 100);
-	Prius(sf::Texture &texture, sf::Vector2f position, sf::Vector2f size, bool isBad = false, bool isFacingLeft = true, int speed = 100);
+	Prius(sf::Texture &texture, float x, float y, float sizeX, float sizeY, bool isBad = false, bool isFacingLeft = true, int speeed = 100);
+	Prius(sf::Texture &texture, sf::Vector2f position, sf::Vector2f size, bool isBad = false, bool isFacingLeft = true, int speeed = 100);
 	virtual ~Prius();
 	bool isShot(float mouseX, float mouseY);
 	void draw(sf::RenderWindow &target);
@@ -30,6 +30,6 @@ public:
 	void update(float dt);
 	// Moves the Prius to the direction it's facing
 	void move(float dt);
-	bool isOffScreen(sf::RenderWindow &target);
+	bool isOffScreen(int windowWidth);
 	void setSpeed(int newSpeed);
 };
