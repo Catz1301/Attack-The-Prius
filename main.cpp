@@ -217,19 +217,21 @@ void makeNewPrius(std::vector<Prius> &vect, int q) {
 	if (q > 2)
 		q = 2;
 	for (int i = 0; i < q; i++) {
-		float x = 100; //rand() % window.getSize().x + 100;
+		float x;// = 100; //rand() % window.getSize().x + 100;
 		float y = rand() % window.getSize().y;
+		int direction = std::rand();
 		x += window.getSize().x;
 		//if (x > 100 + window.getSize().x - priusTransparentTex.getSize().x)
 			//x -= 100;//priusTransparentTex.getSize().x;
 
 		if (y > window.getSize().y - priusTransparentTex.getSize().y)
 			y -= priusTransparentTex.getSize().y;
-		if (rand() % 2 == 0) {
-			vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, true));
-		}
-		else {
-			vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, false));
+		if (direction % 2 == 0) {
+			x = window.getSize().x + 100;
+			vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, false, true,  100));
+		} else {
+			x = -100;
+			vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, false, false, 100));
 		}
 	}
 
