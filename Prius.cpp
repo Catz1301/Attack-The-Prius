@@ -104,13 +104,13 @@ void Prius::move(float dt)
 }
 
 
-bool Prius::isOffScreen(sf::RenderWindow &target)
+bool Prius::isOffScreen(int windowWidth)
 {
 	// TODO: Add your implementation code here.
 	if (facingLeft == true)
 		return (priusSprite.getPosition().x + priusSprite.getGlobalBounds().width < -10);
 	else if (facingLeft == false)
-		return (priusSprite.getPosition().x > target.getSize().x + 10)
+		return (priusSprite.getPosition().x > windowWidth + 10)
 	else
 		return false;
 }
