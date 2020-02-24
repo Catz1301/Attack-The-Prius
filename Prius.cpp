@@ -1,28 +1,40 @@
 #include "Prius.h"
 // Constructors / Destructors
-Prius::Prius(sf::Texture &texture, float x, float y, float sizeX, float sizeY, bool isBad, bool isFacingLeft)
+Prius::Prius(sf::Texture &texture, float x, float y, float sizeX, float sizeY, bool isBad, bool isFacingLeft, int speeed)
 {
 	/*priusBasic.setSize(sf::Vector2f(sizeX, sizeY));
 	priusBasic.setPosition(x-sizeX/2, y-sizeY/2);
 	priusBasic.setFillColor(sf::Color(0, 0, 255));
 	priusBasic.setOrigin(sizeX / 2, sizeY / 2);*/
 	priusSprite.setTexture(texture);
-	priusSprite.setScale(0.5, 0.5);
+	if (isFacingLeft == true) {
+		priusSprite.setScale(0.5, 0.5);
+	}
+	else {
+		priusSprite.setScale(-0.5, 0.5);
+	}
 	priusSprite.setPosition(x - sizeX / 2, y - sizeY / 2);
 	has_Ms_D = isBad;
 	facingLeft = isFacingLeft;
+	speed = speeed;
 }
 
-Prius::Prius(sf::Texture &texture, sf::Vector2f position, sf::Vector2f size, bool isBad, bool isFacingLeft)
+Prius::Prius(sf::Texture &texture, sf::Vector2f position, sf::Vector2f size, bool isBad, bool isFacingLeft, int speeed)
 {
 	/*priusBasic.setSize(size);
 	priusBasic.setPosition(position.x - size.x/2, position.y-size.y/2);
 	priusBasic.setFillColor(sf::Color(sf::Color::Cyan));*/
 	priusSprite.setTexture(texture);
-	priusSprite.setScale(0.5, 0.5);
+	if (isFacingLeft == true) {
+		priusSprite.setScale(0.5, 0.5);
+	}
+	else {
+		priusSprite.setScale(-0.5, 0.5);
+	}
 	priusSprite.setPosition(position.x - size.x / 2, position.y - size.y / 2);
 	has_Ms_D = isBad;
 	facingLeft = isFacingLeft;
+	speed = speeed;
 }
 
 Prius::~Prius()
