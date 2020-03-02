@@ -5,42 +5,59 @@
 #include <vector>
 #include <time.h>
 #include <sstream>
+//#include <sfeMovie/Movie.hpp>
 using namespace sf;
+
+int main();
 
 void removePrius(std::vector<Prius> &vect, size_t pos);
 void makeNewPrius(std::vector<Prius>& vect, int q = 1);
 
-Texture muskHeadTex, priusTransparentTex; // Elon Musk tex, prius tex
+Texture muskHeadTex; // Elon Musk Texture
+Texture priusTransparentTex; // Prius Texture
+Texture missPriusTex; // Miss Prius Texture
+
 Sprite muskHead; // Elon Musk sprite
+
 int score = 0;
-int quanti = 1;
-
-
+int ending_prius = -1;
+bool GAME_OVER = false;
+RenderWindow window(VideoMode::getDesktopMode(), "Attack the Prius!", Style::None | Style::Fullscreen, sf::ContextSettings(0, 0, 3, 1, 1, 0, false));
 // TODO: Hide cursor, so that Elon Musk appears to be the cursor. He is worthy. :)
 
-RenderWindow window(VideoMode::getDesktopMode(), "Attack the Prius!", Style::None | Style::Fullscreen);
 
 Vector2f size(50, 50);
 std::vector<Prius> prii;
+
+//sfe::Movie mve;
 //sf::Text priiScore;
 //sf::Font fnt;
 int main() {
+	/*ContextSettings settings;
+	settings.antialiasingLevel = 3;*/
 	
 	srand(time(0));
-	window.setFramerateLimit(30);
+	window.setFramerateLimit(60);
+	
 
 	if (!muskHeadTex.loadFromFile("Resources/Images/elon_musk_cropped.png")) {
 		throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_TEXTURE");
+		std::cout << "ERROR::MAIN::COULD_NOT_LOAD_TEXTURE" << std::endl;
 	}
 	if (!priusTransparentTex.loadFromFile("Resources/Images/transparent_prius.png")) {
 		throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_TEXTURE");
+		std::cout << "ERROR::MAIN::COULD_NOT_LOAD_TEXTURE" << std::endl;
+	}
+	if (!missPriusTex.loadFromFile("Resources/Images/detgen_prius.png")) {
+		throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_TEXTURE");
+		std::cout << "ERROR::MAIN::COULD_NOT_LOAD_TEXTURE" << std::endl;
 	}
 	/*if (!fnt.loadFromFile("Resources/Fonts/Poppins-ExtraLight.ttf")) {
 		throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_FONT");
 	}*/
-
+	
 	Image priusImage = priusTransparentTex.copyToImage();
-
+	window.setIcon(priusImage.getSize().x, priusImage.getSize().y, priusImage.getPixelsPtr());
 	muskHeadTex.setSmooth(true); // Smoothen Elon Musk's head
 	muskHead.setTexture(muskHeadTex);
 
@@ -49,20 +66,13 @@ int main() {
 	muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);
 	
 	window.setMouseCursorVisible(false); // Hide mouse curser
-	
+	priusTransparentTex.setSmooth(true);
+
 	//t.asMilliseconds();
 	for (int i = 0; i < 5; i++) {
-		float x = rand() % window.getSize().x;
-		float y = rand() % window.getSize().y;
-
-		if (x > window.getSize().x - priusTransparentTex.getSize().x)
-			x -= priusTransparentTex.getSize().x;
-
-		if (y > window.getSize().y - priusTransparentTex.getSize().y)
-			y -= priusTransparentTex.getSize().y;
-
-		prii.push_back(Prius(priusTransparentTex, Vector2f(x, y), size)); // Add new Prius to back of vector<Prius>
+		makeNewPrius(prii);
 	}
+	//mve.openFromFile("Resources/Videos/Test.mp4");
 	/*prii[0].setScale(1, 1);
 	prii[1].setScale(0.5, 0.5);
 
@@ -109,27 +119,18 @@ int main() {
 				muskHead.move(2, 0);
 			}
 			else if (e.type == Event::KeyPressed) {
-				if (e.key.code == Keyboard::S) { // Is 's' is pressed
+				if (e.key.code == Keyboard::C) { // Is 's' is pressed
 					prii.clear(); // Remove all Prii from vector<Prius>
 
 					for (int i = 0; i < 5; i++) {
-						float x = rand() % window.getSize().x;
-						float y = rand() % window.getSize().y;
-
-						if (x > window.getSize().x - priusTransparentTex.getSize().x)
-							x -= priusTransparentTex.getSize().x;
-
-						if (y > window.getSize().y - priusTransparentTex.getSize().y)
-							y -= priusTransparentTex.getSize().y;
-
-						prii.push_back(Prius(priusTransparentTex, Vector2f(x, y), size));
+						makeNewPrius(prii);
 					}
-					/*prii[0].setColor(Color::Blue);
-					prii[1].setColor(Color::Cyan);
-					prii[2].setColor(Color::Green);
-					prii[3].setColor(Color::Magenta);
-					prii[4].setColor(Color::Red);*/
+					
 				}
+				/*else if (e.key.code == Keyboard::P) {
+					if (mve.getStatus() != sfe::Playing)
+						mve.play();
+				}*/
 			}
 			else if (e.type == Event::MouseButtonPressed) {
 				if (Mouse::isButtonPressed(Mouse::Button::Left)) {
@@ -144,15 +145,33 @@ int main() {
 					}
 
 					if (topPrius != -1) {
-						if (topPrius < prii.size() - 1) {
-							removePrius(prii, topPrius);
-							makeNewPrius(prii, quanti);
-							score++;
+						if (!prii[topPrius].isDangerous()) {
+							if (topPrius < prii.size() - 1) {
+								removePrius(prii, topPrius);
+								makeNewPrius(prii);
+								score++;
+							}
+							else {
+								prii.pop_back();
+								makeNewPrius(prii);
+								score++;
+							}
 						}
 						else {
-							prii.pop_back();
-							makeNewPrius(prii, quanti);
-							score++;
+							prii[topPrius].setOrigin(
+								prii[topPrius].getPosition().x - prii[topPrius].getSize().x / 2,
+								prii[topPrius].getPosition().y - prii[topPrius].getSize().y / 2);
+
+							prii[topPrius].setScale(2, 2);
+							if (prii[topPrius].getFacingLeft())
+								prii[topPrius].setPosition(0, 0);
+							else
+								prii[topPrius].setPosition(window.getSize().x, 0);
+							GAME_OVER = true;
+							for (int i = 0; i < prii.size(); i++) {
+								prii[i].stop();
+							}
+							ending_prius = topPrius;
 						}
 					}
 				}
@@ -171,7 +190,7 @@ int main() {
 		
 		for (int i = 0; i < prii.size(); i++) {
 			prii[i].update(dt.asSeconds());
-			if (prii[i].isOffScreen()) {
+			if (prii[i].isOffScreen(window.getSize().x)) {
 				removePrius(prii, i);
 				makeNewPrius(prii);
 				score--;
@@ -180,12 +199,16 @@ int main() {
 		}
 		
 		//priiScore.setString("Score: " + );
-		prii[2].move(dt.asSeconds());
+		//prii[2].move(dt.asSeconds());
 		window.draw(muskHead);
-		window.display();
-		if (score % 10 == 0 && score != 0) {
-			quanti = score/10;
+		//mve.update();
+		//window.draw(mve);
+		if (GAME_OVER) {
+			window.clear(Color(255, 0, 0, 127));
+			prii[ending_prius].draw(window);
 		}
+		window.display();
+
 		dt = clck.restart();
 	}
 }
@@ -215,19 +238,46 @@ void removePrius(std::vector<Prius> &vect, size_t pos) {
 }
 
 void makeNewPrius(std::vector<Prius> &vect, int q) {
-	if (q > 3)
-		q = 3;
-	for (int i = 0; i < q; i++) {
-		float x = 100; //rand() % window.getSize().x + 100;
+	if (q > 2)
+		q = 2;
+	for (int i = 0; i < 1; i++) {
+		int direction = std::rand();
+		int bad_prius = std::rand();
+		float x;
 		float y = rand() % window.getSize().y;
-		x += window.getSize().x;
+		if (direction % 2 == 0)
+			x = 10 + window.getSize().x;
+		else
+			x = -50;
+
+		//float x = 100; //rand() % window.getSize().x + 100;
+		//float y = rand() % window.getSize().y;
+		//else {
+			//float x = -50;
+			//x += window.getSize().x;
+			//float y = rand() % window.getSize().y;
+		//}
 		//if (x > 100 + window.getSize().x - priusTransparentTex.getSize().x)
 			//x -= 100;//priusTransparentTex.getSize().x;
 
 		if (y > window.getSize().y - priusTransparentTex.getSize().y)
 			y -= priusTransparentTex.getSize().y;
+		int speed =  3 + (std::rand() % 5);
+		
+		speed *= 100;
 
-		vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size));
+		if (bad_prius % 5 == 0) {
+			if (direction % 2 == 0)
+				vect.push_back(Prius(missPriusTex, Vector2f(x, y), size, true, true, speed));
+			else if (direction % 2 == 1)
+				vect.push_back(Prius(missPriusTex, Vector2f(x, y), size, true, false, 50));
+		}
+		else {
+			if (direction % 2 == 0)
+				vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, false, true, speed));
+			else if (direction % 2 == 1)
+				vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, false, false, 50));
+		}
 	}
 
 	/*prii[0].setColor(Color::Blue);
