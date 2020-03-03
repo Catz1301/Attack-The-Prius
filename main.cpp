@@ -20,6 +20,7 @@ Texture missPriusTex; // Miss Prius Texture
 Sprite muskHead; // Elon Musk sprite
 
 int score = 0;
+int numOfChildren = 3;
 int ending_prius = -1;
 bool GAME_OVER = false;
 RenderWindow window(VideoMode::getDesktopMode(), "Attack the Prius!", Style::None | Style::Fullscreen, sf::ContextSettings(0, 0, 3, 1, 1, 0, false));
@@ -146,15 +147,20 @@ int main() {
 
 					if (topPrius != -1) {
 						if (!prii[topPrius].isDangerous()) {
+							int giveChildren = std::rand();
 							if (topPrius < prii.size() - 1) {
 								removePrius(prii, topPrius);
 								makeNewPrius(prii);
 								score++;
+								if (giveChildren % 32 == 0)
+									numOfChildren++;
 							}
 							else {
 								prii.pop_back();
 								makeNewPrius(prii);
 								score++;
+								if (giveChildren % 32 == 0)
+									numOfChildren++;
 							}
 						}
 						else {
@@ -172,6 +178,51 @@ int main() {
 								prii[i].stop();
 							}
 							ending_prius = topPrius;
+							numOfChildren--;
+						}
+					}
+				}
+				else if (Mouse::isButtonPressed(Mouse::Button::Right)) {
+					Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
+					
+					int topPrius = -1;
+					for (int i = 0; i < prii.size(); i++) {
+						if (prii[i].isShot(mouse.x, mouse.y)) {
+							topPrius = i;
+						}
+					}
+
+					if (topPrius != -1) {
+						if (!prii[topPrius].isDangerous()) {
+							if (topPrius < prii.size() - 1) {
+								removePrius(prii, topPrius);
+								makeNewPrius(prii);
+								score++;
+								numOfChildren--;
+							}
+							else {
+								prii.pop_back();
+								makeNewPrius(prii);
+								score++;
+								numOfChildren--;
+							}
+						}
+						else {
+							prii[topPrius].setOrigin(
+								prii[topPrius].getPosition().x - prii[topPrius].getSize().x / 2,
+								prii[topPrius].getPosition().y - prii[topPrius].getSize().y / 2);
+
+							prii[topPrius].setScale(2, 2);
+							if (prii[topPrius].getFacingLeft())
+								prii[topPrius].setPosition(0, 0);
+							else
+								prii[topPrius].setPosition(window.getSize().x, 0);
+							GAME_OVER = true;
+							for (int i = 0; i < prii.size(); i++) {
+								prii[i].stop();
+							}
+							ending_prius = topPrius;
+							numOfChildren--;
 						}
 					}
 				}
@@ -185,25 +236,28 @@ int main() {
 		
 		//priiPos.setFillColor(Color(0xFFF));
 		/*priiPos.setFont(Font::loadFromFile())*/
-		muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);
-		window.clear(Color(0, 0, 0, 100));
-		
-		for (int i = 0; i < prii.size(); i++) {
-			prii[i].update(dt.asSeconds());
-			if (prii[i].isOffScreen(window.getSize().x)) {
-				removePrius(prii, i);
-				makeNewPrius(prii);
-				score--;
+		if (GAME_OVER == false) {
+			muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);
+			window.clear(Color(0, 0, 0, 100));
+
+			for (int i = 0; i < prii.size(); i++) {
+				prii[i].update(dt.asSeconds());
+				if (prii[i].isOffScreen(window.getSize().x)) {
+					removePrius(prii, i);
+					makeNewPrius(prii);
+					score--;
+				}
+				prii[i].draw(window);
 			}
-			prii[i].draw(window);
+
+			//priiScore.setString("Score: " + );
+			//prii[2].move(dt.asSeconds());
+			window.draw(muskHead);
+			//mve.update();
+			//window.draw(mve);
+			
 		}
-		
-		//priiScore.setString("Score: " + );
-		//prii[2].move(dt.asSeconds());
-		window.draw(muskHead);
-		//mve.update();
-		//window.draw(mve);
-		if (GAME_OVER) {
+		else {
 			window.clear(Color(255, 0, 0, 127));
 			prii[ending_prius].draw(window);
 		}
