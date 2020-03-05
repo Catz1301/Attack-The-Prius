@@ -1,15 +1,17 @@
 #include "Prius.h"
 // Constructors / Destructors
-Prius::Prius(sf::Texture &texture, float x, float y, float sizeX, float sizeY, bool isBad, bool isFacingLeft, int speeed)
+Prius::Prius(sf::Texture &texture, float x, float y, float sizeX, float sizeY, int screenWidth, int screenHeight, bool isBad, bool isFacingLeft, int speeed)
 {
 	
 	priusSprite.setTexture(texture);
 	
 	if (isFacingLeft == true) {
 		priusSprite.setScale(0.5, 0.5);
+		scaleSize = priusSprite.getScale();
 	}
 	else {
 		priusSprite.setScale(-0.5, 0.5);
+		scaleSize = priusSprite.getScale();
 	}
 	priusSprite.setPosition(x - sizeX / 2, y - sizeY / 2);
 	has_Ms_D = isBad;
@@ -17,17 +19,20 @@ Prius::Prius(sf::Texture &texture, float x, float y, float sizeX, float sizeY, b
 	speed = 1;
 	facingLeft = isFacingLeft;
 	stopped = false;
+	screenSize = sf::Vector2f(screenWidth, screenHeight);
 }
 
-Prius::Prius(sf::Texture &texture, sf::Vector2f position, sf::Vector2f size, bool isBad, bool isFacingLeft, int speeed)
+Prius::Prius(sf::Texture &texture, sf::Vector2f position, sf::Vector2f size, sf::Vector2f windowSize, bool isBad, bool isFacingLeft, int speeed)
 {
 	priusSprite.setTexture(texture);
 
 	if (isFacingLeft == true) {
 		priusSprite.setScale(0.5, 0.5);
+		scaleSize = priusSprite.getScale();
 	}
 	else {
 		priusSprite.setScale(-0.5, 0.5); // Note: X will end up on the top-right hand corner of the Prius.
+		scaleSize = priusSprite.getScale();
 	}
 	priusSprite.setPosition(position.x - size.x / 2, position.y - size.y / 2);
 	has_Ms_D = isBad;
@@ -35,6 +40,7 @@ Prius::Prius(sf::Texture &texture, sf::Vector2f position, sf::Vector2f size, boo
 	speed = 1;
 	facingLeft = isFacingLeft;
 	stopped = false;
+	screenSize = windowSize;
 }
 
 Prius::~Prius()
@@ -107,6 +113,14 @@ void Prius::update(float dt)
 	if (!stopped) {
 		this->move(dt);
 		this->setSpeed(speed + 0.05);
+		if (facingLeft) {
+			this->setScale((2/screenSize.x)+scaleSize.x, (2/screenSize.y)+scaleSize.y);
+		}
+		else {
+			this->setScale(0.2-scaleSize.x, 0.2+scaleSize.y);
+		}
+		scaleSize = priusSprite.getScale();
+		//priusSprite.setScale
 	}
 }
 
