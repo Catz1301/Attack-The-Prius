@@ -1,12 +1,13 @@
-#pragma once
+#ifndef PRIUS_H
+#define PRIUS_H
 
 #include <SFML/Graphics.hpp>
 
 class Prius
 {
 public:
-	Prius(sf::Texture &texture, float x, float y, float sizeX, float sizeY, bool isBad = false, bool isFacingLeft = true, int speeed = 100);
-	Prius(sf::Texture &texture, sf::Vector2f position, sf::Vector2f size, bool isBad = false, bool isFacingLeft = true, int speeed = 100);
+	Prius(sf::Texture &texture, float x, float y, float sizeX, float sizeY, int screenWidth, int screenHeight, bool isBad = false, bool isFacingLeft = true, int speeed = 100);
+	Prius(sf::Texture &texture, sf::Vector2f position, sf::Vector2f size, sf::Vector2f windowSize, bool isBad = false, bool isFacingLeft = true, int speeed = 100);
 	virtual ~Prius();
 	bool isShot(float mouseX, float mouseY);
 	void draw(sf::RenderWindow &target);
@@ -41,5 +42,9 @@ public:
 private:
 	float speed;
 	bool facingLeft;
+	sf::Vector2f scaleSize;
+	sf::Vector2f screenSize;
 };
 
+
+#endif
