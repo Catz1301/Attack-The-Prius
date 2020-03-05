@@ -23,9 +23,11 @@ int score = 0;
 int numOfChildren = 3;
 int ending_prius = -1;
 bool GAME_OVER = false;
+sf::Vector2f windowSize;
+
 RenderWindow window(VideoMode::getDesktopMode(), "Attack the Prius!", Style::None | Style::Fullscreen, sf::ContextSettings(0, 0, 3, 1, 1, 0, false));
 // TODO: Hide cursor, so that Elon Musk appears to be the cursor. He is worthy. :)
-
+sf::Color meowColor = sf::Color(0, 0, 0);
 
 Vector2f size(50, 50);
 std::vector<Prius> prii;
@@ -39,18 +41,18 @@ int main() {
 	
 	srand(time(0));
 	window.setFramerateLimit(60);
-	
+	windowSize = Vector2f(window.getSize().x, window.getSize().y);
 
 	if (!muskHeadTex.loadFromFile("Resources/Images/elon_musk_cropped.png")) {
-		throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_TEXTURE");
+		//throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_TEXTURE");
 		std::cout << "ERROR::MAIN::COULD_NOT_LOAD_TEXTURE" << std::endl;
 	}
 	if (!priusTransparentTex.loadFromFile("Resources/Images/transparent_prius.png")) {
-		throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_TEXTURE");
+		//throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_TEXTURE");
 		std::cout << "ERROR::MAIN::COULD_NOT_LOAD_TEXTURE" << std::endl;
 	}
 	if (!missPriusTex.loadFromFile("Resources/Images/detgen_prius.png")) {
-		throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_TEXTURE");
+		//throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_TEXTURE");
 		std::cout << "ERROR::MAIN::COULD_NOT_LOAD_TEXTURE" << std::endl;
 	}
 	/*if (!fnt.loadFromFile("Resources/Fonts/Poppins-ExtraLight.ttf")) {
@@ -217,10 +219,10 @@ int main() {
 								prii[topPrius].setPosition(0, 0);
 							else
 								prii[topPrius].setPosition(window.getSize().x, 0);
-							GAME_OVER = true;
-							for (int i = 0; i < prii.size(); i++) {
-								prii[i].stop();
-							}
+							//GAME_OVER = true;
+							// for (int i = 0; i < prii.size(); i++) {
+							// 	prii[i].stop();
+							// }
 							ending_prius = topPrius;
 							numOfChildren--;
 						}
@@ -232,13 +234,16 @@ int main() {
 				/*muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);*/
 			
 		}
-		
-		
+		if (GAME_OVER) {
+			meowColor = sf::Color(255, 0, 0);
+		}
+		if (numOfChildren <= 0)
+			GAME_OVER = true;
 		//priiPos.setFillColor(Color(0xFFF));
 		/*priiPos.setFont(Font::loadFromFile())*/
-		if (GAME_OVER == false) {
+		//if (GAME_OVER == false) {
 			muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);
-			window.clear(Color(0, 0, 0, 100));
+			window.clear(Color(meowColor));
 
 			for (int i = 0; i < prii.size(); i++) {
 				prii[i].update(dt.asSeconds());
@@ -256,15 +261,17 @@ int main() {
 			//mve.update();
 			//window.draw(mve);
 			
-		}
-		else {
-			window.clear(Color(255, 0, 0, 127));
-			prii[ending_prius].draw(window);
-		}
+		//}
+		//else {
+			//window.clear(Color(255, 0, 0, 127));
+			//prii[ending_prius].draw(window);
+		//}
 		window.display();
 
 		dt = clck.restart();
 	}
+
+	return 0;
 }
 
 
@@ -322,15 +329,15 @@ void makeNewPrius(std::vector<Prius> &vect, int q) {
 
 		if (bad_prius % 5 == 0) {
 			if (direction % 2 == 0)
-				vect.push_back(Prius(missPriusTex, Vector2f(x, y), size, true, true, speed));
+				vect.push_back(Prius(missPriusTex, Vector2f(x, y), size, windowSize, true, true, speed));
 			else if (direction % 2 == 1)
-				vect.push_back(Prius(missPriusTex, Vector2f(x, y), size, true, false, 50));
+				vect.push_back(Prius(missPriusTex, Vector2f(x, y), size, windowSize, true, false, 50));
 		}
 		else {
 			if (direction % 2 == 0)
-				vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, false, true, speed));
+				vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, windowSize, false, true, speed));
 			else if (direction % 2 == 1)
-				vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, false, false, 50));
+				vect.push_back(Prius(priusTransparentTex, Vector2f(x, y), size, windowSize, false, false, 50));
 		}
 	}
 
