@@ -12,5 +12,6 @@ class ElonBullet {
 	private:
 		sf::Sprite elonBullet;
 		sf::Vector2f scaleSize;
+		sf::Vector2f size;
 
 #endif //!AMMO_H
