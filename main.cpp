@@ -5,6 +5,7 @@
 #include <vector>
 #include <time.h>
 #include <sstream>
+#include "ElonBullet.h"
 //#include <sfeMovie/Movie.hpp>
 using namespace sf;
 
@@ -12,6 +13,8 @@ int main();
 
 void removePrius(std::vector<Prius> &vect, size_t pos);
 void makeNewPrius(std::vector<Prius>& vect, int q = 1);
+void removeElonBullet(std::vector<ElonBullet>& vect, size_t pos);
+void makeNewElonBullet(std::vector<ElonBullet>& vect);
 
 Texture muskHeadTex; // Elon Musk Texture
 Texture priusTransparentTex; // Prius Texture
@@ -31,6 +34,7 @@ sf::Color meowColor = sf::Color(0, 0, 0);
 
 Vector2f size(50, 50);
 std::vector<Prius> prii;
+std::vector<ElonBullet> elonBullets;
 
 //sfe::Movie mve;
 //sf::Text priiScore;
@@ -346,4 +350,23 @@ void makeNewPrius(std::vector<Prius> &vect, int q) {
 	prii[2].setColor(Color::Green);
 	prii[3].setColor(Color::Magenta);
 	prii[4].setColor(Color::Red);*/
+}
+
+void removeElonBullet(std::vector<ElonBullet>& vect, size_t pos) {
+	if (pos < vect.size()-1 && pos >= 0) {
+		do {
+			                           // Simulate a call. remove(elonBullets, 2);
+			vect[pos] = vect[pos + 1]; // vect[2] = vect[3] -- true values (not starting on 0): vect[3] = vect[4]
+			pos++;                     // pos = 3
+									   // vect[3] = vect[4]
+			                           // pos = 4
+		} while (pos < vect.size() - 1); //terminate -- final result: [0 1 3 4 4]
+		vect.pop_back();
+	}
+	/*else if (pos == vect.size() - 1) {
+		vect.pop_back();
+	}*/
+}
+void makeNewElonBullet(std::vector<ElonBullet>& vect, float xPos, float yPos) {
+	vect.push_back(ElonBullet(muskHeadTex, xPos, yPos));
 }
