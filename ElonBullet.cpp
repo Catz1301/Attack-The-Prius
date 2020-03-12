@@ -15,12 +15,23 @@ ElonBullet::~ElonBullet()
 
 ElonBullet::update(float &dt)
 {
-	// TODO: Shrink scaleSize
 	scaleSize -= sf::Vector2f(0.05, 0.05);
 	size = sf::Vector2f(elonBullet.getGlobalBounds().width, elonBullet.getGlobalBounds().height);
-	if (scaleSize.x < 0.1 && scaleSize.y < 0.1) {
-		// TODO: Remove elonBullet and prius it shot.
-	}
+}
+
+ElonBullet::readyToDie()
+{
+	return (scaleSize.x < 0.1 && scaleSize.y < 0.1);
+}
+
+ElonBullet::getScaleSize()
+{
+	return scaleSize;
+}
+
+ElonBullet::getTargetPoint()
+{
+	return elonBullet.getPosition();
 }
 
 ElonBullet::draw(sf::RenderWindow &target)
