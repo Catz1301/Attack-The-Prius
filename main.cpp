@@ -14,7 +14,7 @@ int main();
 void removePrius(std::vector<Prius> &vect, size_t pos);
 void makeNewPrius(std::vector<Prius>& vect, int q = 1);
 void removeElonBullet(std::vector<ElonBullet>& vect, size_t pos);
-void makeNewElonBullet(std::vector<ElonBullet>& vect);
+void makeNewElonBullet(std::vector<ElonBullet>& vect, float xPos, float yPos);
 
 Texture muskHeadTex; // Elon Musk Texture
 Texture priusTransparentTex; // Prius Texture
