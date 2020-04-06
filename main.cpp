@@ -6,12 +6,12 @@
 #include <time.h>
 #include <sstream>
 #include "ElonBullet.h"
-//#include <sfeMovie/Movie.hpp>
+
 using namespace sf;
 
 int main();
 
-void removePrius(std::vector<Prius> &vect, size_t pos);
+void removePrius(std::vector<Prius>& vect, size_t pos);
 void makeNewPrius(std::vector<Prius>& vect, int q = 1);
 void removeElonBullet(std::vector<ElonBullet>& vect, size_t pos);
 void makeNewElonBullet(std::vector<ElonBullet>& vect, float xPos, float yPos);
@@ -36,13 +36,13 @@ Vector2f size(50, 50);
 std::vector<Prius> prii;
 std::vector<ElonBullet> elonBullets;
 
-//sfe::Movie mve;
+
 //sf::Text priiScore;
 //sf::Font fnt;
 int main() {
 	/*ContextSettings settings;
 	settings.antialiasingLevel = 3;*/
-	
+
 	srand(time(0));
 	window.setFramerateLimit(60);
 	windowSize = Vector2f(window.getSize().x, window.getSize().y);
@@ -62,7 +62,7 @@ int main() {
 	/*if (!fnt.loadFromFile("Resources/Fonts/Poppins-ExtraLight.ttf")) {
 		throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_FONT");
 	}*/
-	
+
 	Image priusImage = priusTransparentTex.copyToImage();
 	window.setIcon(priusImage.getSize().x, priusImage.getSize().y, priusImage.getPixelsPtr());
 	muskHeadTex.setSmooth(true); // Smoothen Elon Musk's head
@@ -71,7 +71,7 @@ int main() {
 	// Set muskHead origin for transformations to center
 	muskHead.setOrigin(muskHead.getTexture()->getSize().x / 2, muskHead.getTexture()->getSize().y / 2);
 	muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);
-	
+
 	window.setMouseCursorVisible(false); // Hide mouse curser
 	priusTransparentTex.setSmooth(true);
 
@@ -97,9 +97,9 @@ int main() {
 	priiScore.setFont(fnt);
 	priiScore.setPosition(50, 50);*/
 	while (window.isOpen()) {
-		
-		
-		
+
+
+
 		Event e;
 		while (window.pollEvent(e)) {
 
@@ -132,7 +132,7 @@ int main() {
 					for (int i = 0; i < 5; i++) {
 						makeNewPrius(prii);
 					}
-					
+
 				}
 				/*else if (e.key.code == Keyboard::P) {
 					if (mve.getStatus() != sfe::Playing)
@@ -141,9 +141,9 @@ int main() {
 			}
 			else if (e.type == Event::MouseButtonPressed) {
 				if (Mouse::isButtonPressed(Mouse::Button::Left)) {
-					
+
 					Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
-					
+
 					int topPrius = -1;
 					for (int i = 0; i < prii.size(); i++) {
 						if (prii[i].isShot(mouse.x, mouse.y)) {
@@ -190,7 +190,7 @@ int main() {
 				}
 				else if (Mouse::isButtonPressed(Mouse::Button::Right)) {
 					Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
-					
+
 					int topPrius = -1;
 					for (int i = 0; i < prii.size(); i++) {
 						if (prii[i].isShot(mouse.x, mouse.y)) {
@@ -236,7 +236,7 @@ int main() {
 			// I'm so very sorry :(
 			/*if (e.type == Mouse::isButtonPressed(Mouse::Button::Left))*/
 				/*muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);*/
-			
+
 		}
 		if (GAME_OVER) {
 			meowColor = sf::Color(255, 0, 0);
@@ -246,30 +246,30 @@ int main() {
 		//priiPos.setFillColor(Color(0xFFF));
 		/*priiPos.setFont(Font::loadFromFile())*/
 		//if (GAME_OVER == false) {
-			muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);
-			window.clear(Color(meowColor));
+		muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);
+		window.clear(Color(meowColor));
 
-			for (int i = 0; i < prii.size(); i++) {
-				prii[i].update(dt.asSeconds());
-				if (prii[i].isOffScreen(window.getSize().x)) {
-					removePrius(prii, i);
-					makeNewPrius(prii);
-					score--;
-				}
-				prii[i].draw(window);
+		for (int i = 0; i < prii.size(); i++) {
+			prii[i].update(dt.asSeconds());
+			if (prii[i].isOffScreen(window.getSize().x)) {
+				removePrius(prii, i);
+				makeNewPrius(prii);
+				score--;
 			}
+			prii[i].draw(window);
+		}
 
-			//priiScore.setString("Score: " + );
-			//prii[2].move(dt.asSeconds());
-			window.draw(muskHead);
-			//mve.update();
-			//window.draw(mve);
-			
-		//}
-		//else {
-			//window.clear(Color(255, 0, 0, 127));
-			//prii[ending_prius].draw(window);
-		//}
+		//priiScore.setString("Score: " + );
+		//prii[2].move(dt.asSeconds());
+		window.draw(muskHead);
+		//mve.update();
+		//window.draw(mve);
+
+	//}
+	//else {
+		//window.clear(Color(255, 0, 0, 127));
+		//prii[ending_prius].draw(window);
+	//}
 		window.display();
 
 		dt = clck.restart();
@@ -285,14 +285,14 @@ int main() {
 /// time, but the last element of the vector will be removed in the next
 /// instruction of the method.
 ////////////////////////////////////////////////////////////////////////
-void removePrius(std::vector<Prius> &vect, size_t pos) {
-	if (pos < vect.size()-1 && pos >= 0) {
+void removePrius(std::vector<Prius>& vect, size_t pos) {
+	if (pos < vect.size() - 1 && pos >= 0) {
 		do {
-			                           // Simulate a call. remove(prii, 2);
+			// Simulate a call. remove(prii, 2);
 			vect[pos] = vect[pos + 1]; // vect[2] = vect[3] -- true values (not starting on 0): vect[3] = vect[4]
 			pos++;                     // pos = 3
 									   // vect[3] = vect[4]
-			                           // pos = 4
+									   // pos = 4
 		} while (pos < vect.size() - 1); //terminate -- final result: [0 1 3 4 4]
 		vect.pop_back();
 	}
@@ -302,7 +302,7 @@ void removePrius(std::vector<Prius> &vect, size_t pos) {
 
 }
 
-void makeNewPrius(std::vector<Prius> &vect, int q) {
+void makeNewPrius(std::vector<Prius>& vect, int q) {
 	if (q > 2)
 		q = 2;
 	for (int i = 0; i < 1; i++) {
@@ -327,8 +327,8 @@ void makeNewPrius(std::vector<Prius> &vect, int q) {
 
 		if (y > window.getSize().y - priusTransparentTex.getSize().y)
 			y -= priusTransparentTex.getSize().y;
-		int speed =  3 + (std::rand() % 5);
-		
+		int speed = 3 + (std::rand() % 5);
+
 		speed *= 100;
 
 		if (bad_prius % 5 == 0) {
@@ -353,13 +353,13 @@ void makeNewPrius(std::vector<Prius> &vect, int q) {
 }
 
 void removeElonBullet(std::vector<ElonBullet>& vect, size_t pos) {
-	if (pos < vect.size()-1 && pos >= 0) {
+	if (pos < vect.size() - 1 && pos >= 0) {
 		do {
-			                           // Simulate a call. remove(elonBullets, 2);
+			// Simulate a call. remove(elonBullets, 2);
 			vect[pos] = vect[pos + 1]; // vect[2] = vect[3] -- true values (not starting on 0): vect[3] = vect[4]
 			pos++;                     // pos = 3
 									   // vect[3] = vect[4]
-			                           // pos = 4
+									   // pos = 4
 		} while (pos < vect.size() - 1); //terminate -- final result: [0 1 3 4 4]
 		vect.pop_back();
 	}

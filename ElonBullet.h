@@ -18,4 +18,4 @@ class ElonBullet {
 		sf::Vector2f scaleSize;
 		sf::Vector2f size;
 
-#endif //!ELONBULLET_H
+#endif

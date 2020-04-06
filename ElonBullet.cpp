@@ -3,7 +3,10 @@
 ElonBullet::ElonBullet(sf::Texture &texture, float x, float y)
 {
 	elonBullet.setTexture(texture);
-	size = texture.getSize();
+	size = sf::Vector2f(
+		texture.getSize().x,
+		texture.getSize().y
+	);
 	scaleSize = elonBullet.getScale();
 	elonBullet.setOrigin(size.x/2, size.y/2);
 }
@@ -13,28 +16,32 @@ ElonBullet::~ElonBullet()
 	
 }
 
-ElonBullet::update(float &dt)
+// Methods
+void ElonBullet::update(float &dt)
 {
 	scaleSize -= sf::Vector2f(0.05, 0.05);
-	size = sf::Vector2f(elonBullet.getGlobalBounds().width, elonBullet.getGlobalBounds().height);
+	size = sf::Vector2f(
+		elonBullet.getGlobalBounds().width,
+		elonBullet.getGlobalBounds().height
+	);
 }
 
-ElonBullet::readyToDie()
+void ElonBullet::draw(sf::RenderWindow& target)
+{
+	target.draw(elonBullet);
+}
+
+bool ElonBullet::readyToDie()
 {
 	return (scaleSize.x < 0.1 && scaleSize.y < 0.1);
 }
 
-ElonBullet::getScaleSize()
+sf::Vector2f ElonBullet::getScaleSize()
 {
 	return scaleSize;
 }
 
-ElonBullet::getTargetPoint()
+sf::Vector2f ElonBullet::getTargetPoint()
 {
 	return elonBullet.getPosition();
-}
-
-ElonBullet::draw(sf::RenderWindow &target)
-{
-	target.draw(elonBullet);
 }
