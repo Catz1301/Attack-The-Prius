@@ -32,7 +32,7 @@ RenderWindow window(VideoMode::getDesktopMode(), "Attack the Prius!", Style::Non
 // TODO: Hide cursor, so that Elon Musk appears to be the cursor. He is worthy. :)
 sf::Color meowColor = sf::Color(0, 0, 0);
 
-Vector2f size(50, 50);
+Vector2f size = Vector2f(50, 50);
 std::vector<Prius> prii;
 std::vector<ElonBullet> elonBullets;
 
