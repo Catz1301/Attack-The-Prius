@@ -9,15 +9,16 @@ ElonBullet::ElonBullet(sf::Texture &texture, float x, float y)
 	);
 	scaleSize = elonBullet.getScale();
 	elonBullet.setOrigin(size.x/2, size.y/2);
+	usedBullets = std::vector<sf::Sprite>();
 }
 
 ElonBullet::~ElonBullet()
 {
-	
+	usedBullets.clear();
 }
 
 // Methods
-void ElonBullet::update(float &dt)
+void ElonBullet::update(float dt)
 {
 	scaleSize -= sf::Vector2f(0.05, 0.05);
 	size = sf::Vector2f(

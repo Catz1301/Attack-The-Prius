@@ -117,7 +117,7 @@ void Prius::update(float dt)
 			this->setScale((2/screenSize.x)+scaleSize.x, (2/screenSize.y)+scaleSize.y);
 		}
 		else {
-			this->setScale(0.2-scaleSize.x, 0.2+scaleSize.y);
+			this->setScale(-(2 / screenSize.x) + scaleSize.x, (2 / screenSize.y) + scaleSize.y);
 		}
 		scaleSize = priusSprite.getScale();
 		//priusSprite.setScale

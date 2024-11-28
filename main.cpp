@@ -7,6 +7,17 @@
 #include <sstream>
 #include "ElonBullet.h"
 
+// Every 5 points (in score), give a new child. Children will be used to attack the bad prii. Don't waste children.
+// For every bad prius that gets through, the demonic goat queen will get stronger.
+// For every bad prius attacked, health will diminish. play evil goat scream
+// Maybe holy water can help restore health
+
+
+// TODO: Add a demonic goat queen rage bar in the bottom left corner.
+// TODO: Add a health bar at the bottom left corner, under rage bar.
+// TODO: Add a holy object count that displays a holy object for every holy object currently held. display under health
+// bar
+
 using namespace sf;
 
 int main();
@@ -143,7 +154,7 @@ int main() {
 				if (Mouse::isButtonPressed(Mouse::Button::Left)) {
 
 					Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
-
+					makeNewElonBullet(elonBullets, mouse.x, mouse.y);
 					int topPrius = -1;
 					for (int i = 0; i < prii.size(); i++) {
 						if (prii[i].isShot(mouse.x, mouse.y)) {
@@ -157,16 +168,15 @@ int main() {
 							if (topPrius < prii.size() - 1) {
 								removePrius(prii, topPrius);
 								makeNewPrius(prii);
-								score++;
-								if (giveChildren % 32 == 0)
-									numOfChildren++;
+//								if (giveChildren % 32 == 0)
+	//								numOfChildren++;
 							}
 							else {
 								prii.pop_back();
 								makeNewPrius(prii);
-								score++;
-								if (giveChildren % 32 == 0)
-									numOfChildren++;
+								//score++;
+								//if (giveChildren % 32 == 0)
+									//numOfChildren++;
 							}
 						}
 						else {
@@ -184,11 +194,11 @@ int main() {
 								prii[i].stop();
 							}
 							ending_prius = topPrius;
-							numOfChildren--;
+							//numOfChildren--;
 						}
 					}
 				}
-				else if (Mouse::isButtonPressed(Mouse::Button::Right)) {
+				else if (Mouse::isButtonPressed(Mouse::Button::Right)) { // for dangerous Prii
 					Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
 
 					int topPrius = -1;
@@ -203,14 +213,14 @@ int main() {
 							if (topPrius < prii.size() - 1) {
 								removePrius(prii, topPrius);
 								makeNewPrius(prii);
-								score++;
-								numOfChildren--;
+								//score++;
+								//numOfChildren--;
 							}
 							else {
 								prii.pop_back();
 								makeNewPrius(prii);
-								score++;
-								numOfChildren--;
+								//score++;
+								//numOfChildren--;
 							}
 						}
 						else {
@@ -257,6 +267,14 @@ int main() {
 				score--;
 			}
 			prii[i].draw(window);
+		}
+
+		for (int i = 0; i < elonBullets.size(); i++) {
+			elonBullets[i].update(dt.asSeconds());
+			if (elonBullets[i].readyToDie()) {
+				removeElonBullet(elonBullets, i);
+			}
+			elonBullets[i].draw(window);
 		}
 
 		//priiScore.setString("Score: " + );
