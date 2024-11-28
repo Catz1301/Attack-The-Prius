@@ -13,6 +13,8 @@ public:
 	sf::Vector2f getScaleSize();
 	sf::Vector2f getTargetPoint();
 	std::vector<sf::Sprite> usedBullets;
+	bool dead;
+
 
 private:
 	sf::Sprite elonBullet;

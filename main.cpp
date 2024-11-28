@@ -7,8 +7,9 @@
 #include <sstream>
 #include "ElonBullet.h"
 
-// Every 5 points (in score), give a new child. Children will be used to attack the bad prii. Don't waste children.
-// For every bad prius that gets through, the demonic goat queen will get stronger.
+// Every 5 points (in score), give a new holy object. Holy objects will be used to attack the bad prii. 
+//   Don't waste holy objects.
+// For every bad prius that gets through, the demonic goat queen will get stronger in rage.
 // For every bad prius attacked, health will diminish. play evil goat scream
 // Maybe holy water can help restore health
 
@@ -17,6 +18,13 @@
 // TODO: Add a health bar at the bottom left corner, under rage bar.
 // TODO: Add a holy object count that displays a holy object for every holy object currently held. display under health
 // bar
+// TODO: Properly calculate score, and award holy objects
+// TODO: Find some holy object sprite assets
+
+// ------ TOP PIORITY --------
+// TODO: Dont let ElonBullet flip and grow infinitely.
+// TODO: allow for more than one ElonBullet in the elonBullet vector.
+
 
 using namespace sf;
 
@@ -151,10 +159,11 @@ int main() {
 				}*/
 			}
 			else if (e.type == Event::MouseButtonPressed) {
-				if (Mouse::isButtonPressed(Mouse::Button::Left)) {
+				if (Mouse::isButtonPressed(Mouse::Button::Left)) { // For good prii
 
 					Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
 					makeNewElonBullet(elonBullets, mouse.x, mouse.y);
+					std::cout << "elonBullet_X: " << mouse.x << " | elonBullet_Y " << mouse.y << std::endl;
 					int topPrius = -1;
 					for (int i = 0; i < prii.size(); i++) {
 						if (prii[i].isShot(mouse.x, mouse.y)) {
@@ -200,7 +209,8 @@ int main() {
 				}
 				else if (Mouse::isButtonPressed(Mouse::Button::Right)) { // for dangerous Prii
 					Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
-
+					makeNewElonBullet(elonBullets, mouse.x, mouse.y);
+					std::cout << "elonBullet_X: " << mouse.x << " | elonBullet_Y " << mouse.y << std::endl;
 					int topPrius = -1;
 					for (int i = 0; i < prii.size(); i++) {
 						if (prii[i].isShot(mouse.x, mouse.y)) {
@@ -271,7 +281,7 @@ int main() {
 
 		for (int i = 0; i < elonBullets.size(); i++) {
 			elonBullets[i].update(dt.asSeconds());
-			if (elonBullets[i].readyToDie()) {
+			if (elonBullets[i].dead) {
 				removeElonBullet(elonBullets, i);
 			}
 			elonBullets[i].draw(window);
@@ -371,7 +381,7 @@ void makeNewPrius(std::vector<Prius>& vect, int q) {
 }
 
 void removeElonBullet(std::vector<ElonBullet>& vect, size_t pos) {
-	if (pos < vect.size() - 1 && pos >= 0) {
+	if (pos < vect.size() - 1 && pos >= 0) { // if pos is in bounds of vector
 		do {
 			// Simulate a call. remove(elonBullets, 2);
 			vect[pos] = vect[pos + 1]; // vect[2] = vect[3] -- true values (not starting on 0): vect[3] = vect[4]
