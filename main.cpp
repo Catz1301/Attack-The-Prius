@@ -6,24 +6,26 @@
 #include <time.h>
 #include <sstream>
 #include "ElonBullet.h"
+#include "HolyObject.h"
 
 // Every 5 points (in score), give a new holy object. Holy objects will be used to attack the bad prii. 
 //   Don't waste holy objects.
-// For every bad prius that gets through, the demonic goat queen will get stronger in rage.
-// For every bad prius attacked, health will diminish. play evil goat scream
+// For every bad prius that gets through, the demonic goat queen will get stronger.
+// For every bad prius attacked without holy objects, health will diminish. play evil goat scream
 // Maybe holy water can help restore health
 
 
-// TODO: Add a demonic goat queen rage bar in the bottom left corner.
-// TODO: Add a health bar at the bottom left corner, under rage bar.
+// TODO: Add a demonic goat queen strength bar in the bottom left corner.
+// TODO: Add a health bar at the bottom left corner, under strength bar.
 // TODO: Add a holy object count that displays a holy object for every holy object currently held. display under health
 // bar
 // TODO: Properly calculate score, and award holy objects
-// TODO: Find some holy object sprite assets
+// TODO: Implement HolyObject
+// TODO: Work on bullet collision
 
 // ------ TOP PIORITY --------
-// TODO: Dont let ElonBullet flip and grow infinitely.
-// TODO: allow for more than one ElonBullet in the elonBullet vector.
+// TODO: Remove dead bullets
+// TODO: Allow for more than one ElonBullet in the elonBullet vector.
 
 
 using namespace sf;
@@ -98,6 +100,8 @@ int main() {
 	for (int i = 0; i < 5; i++) {
 		makeNewPrius(prii);
 	}
+	HolyObject test = HolyObject(window.getSize().x / 2, window.getSize().y / 2);
+
 	//mve.openFromFile("Resources/Videos/Test.mp4");
 	/*prii[0].setScale(1, 1);
 	prii[1].setScale(0.5, 0.5);
@@ -279,16 +283,18 @@ int main() {
 			prii[i].draw(window);
 		}
 
-		for (int i = 0; i < elonBullets.size(); i++) {
+		for (int i = 0; i < elonBullets.size(); ++i) {
 			elonBullets[i].update(dt.asSeconds());
 			if (elonBullets[i].dead) {
 				removeElonBullet(elonBullets, i);
+				//break;
 			}
 			elonBullets[i].draw(window);
 		}
 
 		//priiScore.setString("Score: " + );
 		//prii[2].move(dt.asSeconds());
+		test.draw(window);
 		window.draw(muskHead);
 		//mve.update();
 		//window.draw(mve);
@@ -381,9 +387,9 @@ void makeNewPrius(std::vector<Prius>& vect, int q) {
 }
 
 void removeElonBullet(std::vector<ElonBullet>& vect, size_t pos) {
-	if (pos < vect.size() - 1 && pos >= 0) { // if pos is in bounds of vector
+	if (pos < vect.size() - 1 && pos >= 0) {
 		do {
-			// Simulate a call. remove(elonBullets, 2);
+			// Simulate a call. remove(prii, 2);
 			vect[pos] = vect[pos + 1]; // vect[2] = vect[3] -- true values (not starting on 0): vect[3] = vect[4]
 			pos++;                     // pos = 3
 									   // vect[3] = vect[4]
@@ -391,6 +397,7 @@ void removeElonBullet(std::vector<ElonBullet>& vect, size_t pos) {
 		} while (pos < vect.size() - 1); //terminate -- final result: [0 1 3 4 4]
 		vect.pop_back();
 	}
+	
 	/*else if (pos == vect.size() - 1) {
 		vect.pop_back();
 	}*/

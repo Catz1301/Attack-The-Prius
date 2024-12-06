@@ -1,4 +1,5 @@
 #include "ElonBullet.h"
+#include <iostream>
 
 ElonBullet::ElonBullet(sf::Texture &texture, float x, float y)
 {
@@ -21,14 +22,17 @@ ElonBullet::~ElonBullet()
 // Methods
 void ElonBullet::update(float dt)
 {
-	scaleSize -= sf::Vector2f(0.05f, 0.05f);
+	if (dead == true)
+		return;
+	scaleSize -= sf::Vector2f(0.03f, 0.03f);
 	elonBullet.setScale(scaleSize);
 	size = sf::Vector2f(
 		elonBullet.getGlobalBounds().width,
 		elonBullet.getGlobalBounds().height
 	);
-	if (this->readyToDie()) {
+	if (readyToDie()) {
 		dead = true;
+
 	}
 }
 
@@ -39,7 +43,9 @@ void ElonBullet::draw(sf::RenderWindow& target)
 
 bool ElonBullet::readyToDie()
 {
-	return (scaleSize.x <= 1.0f || scaleSize.y <= 1.0f);
+	std::cout << "ElonBullet::readyToDie() - scale values: x:" << scaleSize.x << ", y: " << scaleSize.y << std::endl;
+	std::cout << "ElonBullet::readyToDie() - result: " << (scaleSize.x <= 1.0 || scaleSize.y <= 1.0) << std::endl;
+	return (scaleSize.x <= 0.05 || scaleSize.y <= 0.05);
 }
 
 sf::Vector2f ElonBullet::getScaleSize()
