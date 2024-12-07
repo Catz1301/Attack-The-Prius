@@ -14,11 +14,11 @@ public:
 	sf::Vector2f getTargetPoint();
 	std::vector<sf::Sprite> usedBullets;
 	bool dead;
-
+	sf::Vector2f size;
+	sf::Sprite getSprite();
 
 private:
 	sf::Sprite elonBullet;
 	sf::Vector2f scaleSize;
-	sf::Vector2f size;
 };
 #endif

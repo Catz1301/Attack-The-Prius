@@ -12,6 +12,7 @@ ElonBullet::ElonBullet(sf::Texture &texture, float x, float y)
 	elonBullet.setOrigin(size.x/2, size.y/2);
 	usedBullets = std::vector<sf::Sprite>();
 	elonBullet.setPosition(x, y);
+	dead = false;
 }
 
 ElonBullet::~ElonBullet()
@@ -44,7 +45,7 @@ void ElonBullet::draw(sf::RenderWindow& target)
 bool ElonBullet::readyToDie()
 {
 	std::cout << "ElonBullet::readyToDie() - scale values: x:" << scaleSize.x << ", y: " << scaleSize.y << std::endl;
-	std::cout << "ElonBullet::readyToDie() - result: " << (scaleSize.x <= 1.0 || scaleSize.y <= 1.0) << std::endl;
+	std::cout << "ElonBullet::readyToDie() - result: " << (scaleSize.x <= 0.05 || scaleSize.y <= 0.05) << std::endl;
 	return (scaleSize.x <= 0.05 || scaleSize.y <= 0.05);
 }
 
@@ -56,4 +57,8 @@ sf::Vector2f ElonBullet::getScaleSize()
 sf::Vector2f ElonBullet::getTargetPoint()
 {
 	return elonBullet.getPosition();
+}
+
+sf::Sprite ElonBullet::getSprite() {
+	return elonBullet;
 }

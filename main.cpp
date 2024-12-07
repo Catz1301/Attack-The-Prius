@@ -14,18 +14,19 @@
 // For every bad prius attacked without holy objects, health will diminish. play evil goat scream
 // Maybe holy water can help restore health
 
+// ------ LONG TERM TODO -------
+// TODO: Make a scene manager class
+// TODO: Move object makers and removers to an object management file.
+// TODO: Find demonic goat queen
 
 // TODO: Add a demonic goat queen strength bar in the bottom left corner.
 // TODO: Add a health bar at the bottom left corner, under strength bar.
-// TODO: Add a holy object count that displays a holy object for every holy object currently held. display under health
-// bar
-// TODO: Properly calculate score, and award holy objects
-// TODO: Implement HolyObject
-// TODO: Work on bullet collision
+// TODO: Make game over effective.
 
 // ------ TOP PIORITY --------
-// TODO: Remove dead bullets
-// TODO: Allow for more than one ElonBullet in the elonBullet vector.
+// TODO: Properly calculate score, and award holy objects
+// TODO: Add a holy object count that displays a holy object for every holy object currently held. display under health
+// bar
 
 
 using namespace sf;
@@ -46,6 +47,7 @@ Sprite muskHead; // Elon Musk sprite
 int score = 0;
 int numOfChildren = 3;
 int ending_prius = -1;
+int health = 100;
 bool GAME_OVER = false;
 sf::Vector2f windowSize;
 
@@ -57,6 +59,10 @@ Vector2f size = Vector2f(50, 50);
 std::vector<Prius> prii;
 std::vector<ElonBullet> elonBullets;
 
+bool inflictDamage() {
+	health -= 5;
+	return (health <= 0);
+}
 
 //sf::Text priiScore;
 //sf::Font fnt;
@@ -169,92 +175,92 @@ int main() {
 					makeNewElonBullet(elonBullets, mouse.x, mouse.y);
 					std::cout << "elonBullet_X: " << mouse.x << " | elonBullet_Y " << mouse.y << std::endl;
 					int topPrius = -1;
-					for (int i = 0; i < prii.size(); i++) {
-						if (prii[i].isShot(mouse.x, mouse.y)) {
-							topPrius = i;
-						}
-					}
-
-					if (topPrius != -1) {
-						if (!prii[topPrius].isDangerous()) {
-							int giveChildren = std::rand();
-							if (topPrius < prii.size() - 1) {
-								removePrius(prii, topPrius);
-								makeNewPrius(prii);
-//								if (giveChildren % 32 == 0)
-	//								numOfChildren++;
-							}
-							else {
-								prii.pop_back();
-								makeNewPrius(prii);
-								//score++;
-								//if (giveChildren % 32 == 0)
-									//numOfChildren++;
-							}
-						}
-						else {
-							prii[topPrius].setOrigin(
-								prii[topPrius].getPosition().x - prii[topPrius].getSize().x / 2,
-								prii[topPrius].getPosition().y - prii[topPrius].getSize().y / 2);
-
-							prii[topPrius].setScale(2, 2);
-							if (prii[topPrius].getFacingLeft())
-								prii[topPrius].setPosition(0, 0);
-							else
-								prii[topPrius].setPosition(window.getSize().x, 0);
-							GAME_OVER = true;
-							for (int i = 0; i < prii.size(); i++) {
-								prii[i].stop();
-							}
-							ending_prius = topPrius;
-							//numOfChildren--;
-						}
-					}
+//					for (int i = 0; i < prii.size(); i++) {
+//						if (prii[i].isShot(mouse.x, mouse.y)) {
+//							topPrius = i;
+//						}
+//					}
+//
+//					if (topPrius != -1) {
+//						if (!prii[topPrius].isDangerous()) {
+//							int giveChildren = std::rand();
+//							if (topPrius < prii.size() - 1) {
+//								removePrius(prii, topPrius);
+//								makeNewPrius(prii);
+////								if (giveChildren % 32 == 0)
+//	//								numOfChildren++;
+//							}
+//							else {
+//								prii.pop_back();
+//								makeNewPrius(prii);
+//								//score++;
+//								//if (giveChildren % 32 == 0)
+//									//numOfChildren++;
+//							}
+//						}
+//						else {
+//							prii[topPrius].setOrigin(
+//								prii[topPrius].getPosition().x - prii[topPrius].getSize().x / 2,
+//								prii[topPrius].getPosition().y - prii[topPrius].getSize().y / 2);
+//
+//							prii[topPrius].setScale(2, 2);
+//							if (prii[topPrius].getFacingLeft())
+//								prii[topPrius].setPosition(0, 0);
+//							else
+//								prii[topPrius].setPosition(window.getSize().x, 0);
+//							GAME_OVER = true;
+//							for (int i = 0; i < prii.size(); i++) {
+//								prii[i].stop();
+//							}
+//							ending_prius = topPrius;
+//							//numOfChildren--;
+//						}
+					//}
 				}
 				else if (Mouse::isButtonPressed(Mouse::Button::Right)) { // for dangerous Prii
 					Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
 					makeNewElonBullet(elonBullets, mouse.x, mouse.y);
 					std::cout << "elonBullet_X: " << mouse.x << " | elonBullet_Y " << mouse.y << std::endl;
 					int topPrius = -1;
-					for (int i = 0; i < prii.size(); i++) {
-						if (prii[i].isShot(mouse.x, mouse.y)) {
-							topPrius = i;
-						}
-					}
+					//for (int i = 0; i < prii.size(); i++) {
+					//	if (prii[i].isShot(mouse.x, mouse.y)) {
+					//		topPrius = i;
+					//	}
+					//}
 
-					if (topPrius != -1) {
-						if (!prii[topPrius].isDangerous()) {
-							if (topPrius < prii.size() - 1) {
-								removePrius(prii, topPrius);
-								makeNewPrius(prii);
-								//score++;
-								//numOfChildren--;
-							}
-							else {
-								prii.pop_back();
-								makeNewPrius(prii);
-								//score++;
-								//numOfChildren--;
-							}
-						}
-						else {
-							prii[topPrius].setOrigin(
-								prii[topPrius].getPosition().x - prii[topPrius].getSize().x / 2,
-								prii[topPrius].getPosition().y - prii[topPrius].getSize().y / 2);
+					//if (topPrius != -1) {
+					//	if (!prii[topPrius].isDangerous()) {
+					//		if (topPrius < prii.size() - 1) {
+					//			removePrius(prii, topPrius);
+					//			makeNewPrius(prii);
+					//			//score++;
+					//			//numOfChildren--;
+					//		}
+					//		else {
+					//			prii.pop_back();
+					//			makeNewPrius(prii);
+					//			//score++;
+					//			//numOfChildren--;
+					//		}
+					//	}
+					//	else {
+					//		prii[topPrius].setOrigin(
+					//			prii[topPrius].getPosition().x - prii[topPrius].getSize().x / 2,
+					//			prii[topPrius].getPosition().y - prii[topPrius].getSize().y / 2);
 
-							prii[topPrius].setScale(2, 2);
-							if (prii[topPrius].getFacingLeft())
-								prii[topPrius].setPosition(0, 0);
-							else
-								prii[topPrius].setPosition(window.getSize().x, 0);
-							//GAME_OVER = true;
-							// for (int i = 0; i < prii.size(); i++) {
-							// 	prii[i].stop();
-							// }
-							ending_prius = topPrius;
-							numOfChildren--;
-						}
-					}
+					//		prii[topPrius].setScale(2, 2);
+					//		if (prii[topPrius].getFacingLeft())
+					//			prii[topPrius].setPosition(0, 0);
+					//		else
+					//			prii[topPrius].setPosition(window.getSize().x, 0);
+					//		//GAME_OVER = true;
+					//		// for (int i = 0; i < prii.size(); i++) {
+					//		// 	prii[i].stop();
+					//		// }
+					//		ending_prius = topPrius;
+					//		numOfChildren--;
+					//	}
+					//}
 				}
 			}
 			// I'm so very sorry :(
@@ -274,7 +280,18 @@ int main() {
 		window.clear(Color(meowColor));
 
 		for (int i = 0; i < prii.size(); i++) {
-			prii[i].update(dt.asSeconds());
+			prii[i].update(elonBullets, dt.asSeconds());
+			if (prii[i].attacked) {
+				if (prii[i].isDangerous()) {
+					if (inflictDamage())
+						GAME_OVER = true;
+				} else {
+					score++;
+				}
+				removePrius(prii, i);
+				makeNewPrius(prii);
+				continue;
+			} 
 			if (prii[i].isOffScreen(window.getSize().x)) {
 				removePrius(prii, i);
 				makeNewPrius(prii);
@@ -289,7 +306,8 @@ int main() {
 				removeElonBullet(elonBullets, i);
 				//break;
 			}
-			elonBullets[i].draw(window);
+			if (elonBullets.size() != 0)
+				elonBullets[i].draw(window);
 		}
 
 		//priiScore.setString("Score: " + );
@@ -398,9 +416,9 @@ void removeElonBullet(std::vector<ElonBullet>& vect, size_t pos) {
 		vect.pop_back();
 	}
 	
-	/*else if (pos == vect.size() - 1) {
+	else if (pos == vect.size() - 1) {
 		vect.pop_back();
-	}*/
+	}
 }
 void makeNewElonBullet(std::vector<ElonBullet>& vect, float xPos, float yPos) {
 	vect.push_back(ElonBullet(muskHeadTex, xPos, yPos));

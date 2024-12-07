@@ -107,12 +107,12 @@ void Prius::setColor(const sf::Color color)
 
 
 // Update Prius
-void Prius::update(float dt)
+void Prius::update(std::vector<ElonBullet> &vect, float dt)
 {
 	// TODO: Add your implementation code here.
 	if (!stopped) {
 		this->move(dt);
-		this->setSpeed(speed + 0.05);
+		this->setSpeed(speed + 0.05f);
 		if (facingLeft) {
 			this->setScale((2/screenSize.x)+scaleSize.x, (2/screenSize.y)+scaleSize.y);
 		}
@@ -120,6 +120,10 @@ void Prius::update(float dt)
 			this->setScale(-(2 / screenSize.x) + scaleSize.x, (2 / screenSize.y) + scaleSize.y);
 		}
 		scaleSize = priusSprite.getScale();
+		if (this->collidesWithBullet(vect)) {
+			// handle for different prii
+			this->attacked = true;
+		}
 		//priusSprite.setScale
 	}
 }
@@ -172,4 +176,20 @@ sf::Vector2f Prius::getPosition()
 bool Prius::getFacingLeft()
 {
 	return facingLeft;
+}
+
+bool Prius::collidesWithBullet(std::vector<ElonBullet>& vect) {
+	if (vect.size() == 0)
+		return false;
+	else {
+		for (int i = 0; i < vect.size(); ++i) {
+			sf::FloatRect intersection;
+			if (this->getSprite().getGlobalBounds().intersects(vect[i].getSprite().getGlobalBounds(), intersection)) {
+
+				vect[i].dead = true;
+				return true;
+			}
+		}
+	}
+	return false;
 }
