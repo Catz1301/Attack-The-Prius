@@ -7,6 +7,7 @@
 #include <sstream>
 #include "ElonBullet.h"
 #include "HolyObject.h"
+#include "Player.h"
 
 // Every 5 points (in score), give a new holy object. Holy objects will be used to attack the bad prii. 
 //   Don't waste holy objects.
@@ -102,9 +103,12 @@ int main() {
 	window.setMouseCursorVisible(false); // Hide mouse curser
 	priusTransparentTex.setSmooth(true);
 
+	//Player player = Player(&window);
+	
 	//t.asMilliseconds();
 	for (int i = 0; i < 5; i++) {
 		makeNewPrius(prii);
+		//player.makeNewPrius();
 	}
 	HolyObject test = HolyObject(window.getSize().x / 2, window.getSize().y / 2);
 

@@ -296,11 +296,13 @@
     <ClCompile Include="ElonBullet.cpp" />
     <ClCompile Include="HolyObject.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Prius.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ElonBullet.h" />
     <ClInclude Include="HolyObject.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Prius.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
