@@ -77,10 +77,11 @@ int main() {
 					window.close();
 				}
 			}
-			sceneManager.update(e, dt);
-			sceneManager.render();
-			dt = clck.restart();
 		}
+		window.clear();
+		sceneManager.update(e, dt);
+		sceneManager.render();
+		dt = clck.restart();
 	}
 
 	return 0;
