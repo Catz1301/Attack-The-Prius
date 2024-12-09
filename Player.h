@@ -7,10 +7,12 @@
 #ifndef PLAYER_HPP
 #define PLAYER_HPP
 
+using namespace sf;
+
 class Player
 {
 public:
-	Player(sf::RenderWindow *window);
+	Player(RenderWindow& win);
 	~Player();
 	bool inflictDamage(int amount = 5);
 	void heal(int amount = 20);
@@ -35,8 +37,9 @@ public:
 private:
 	int health;
 	int score;
-	sf::RenderWindow *windowCtx;
+	RenderWindow &window;
 
 };
+
 
 #endif

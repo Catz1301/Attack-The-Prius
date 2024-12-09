@@ -296,16 +296,20 @@
     <ClCompile Include="ElonBullet.cpp" />
     <ClCompile Include="HolyObject.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Prius.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="Scene1.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ElonBullet.h" />
     <ClInclude Include="HolyObject.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="Prius.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="Scene1.h" />
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Attack the Prius.rc" />
