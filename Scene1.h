@@ -22,6 +22,7 @@ private:
     void makeNewElonBullet(std::vector<ElonBullet>& vect, float xPos, float yPos);
     void removeHolyObject(std::vector<HolyObject>& vect, size_t pos);
     void makeNewHolyObject(std::vector<HolyObject>& vect, float xPos, float yPos);
+    void removeAttackedPrius(std::vector<Prius>& vect);
 
     sf::Texture muskHeadTex; // Elon Musk Texture
     sf::Texture priusTransparentTex; // Prius Texture
@@ -31,7 +32,6 @@ private:
     sf::Vector2f windowSize;
     sf::Vector2f size;
     sf::RenderWindow &window;
-    sf::Event e;
     std::vector<Prius> prii;
     std::vector<ElonBullet> elonBullets;
     std::vector<HolyObject> holyObjects;

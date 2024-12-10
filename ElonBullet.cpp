@@ -44,8 +44,8 @@ void ElonBullet::draw(sf::RenderWindow& target)
 
 bool ElonBullet::readyToDie()
 {
-	std::cout << "ElonBullet::readyToDie() - scale values: x:" << scaleSize.x << ", y: " << scaleSize.y << std::endl;
-	std::cout << "ElonBullet::readyToDie() - result: " << (scaleSize.x <= 0.05 || scaleSize.y <= 0.05) << std::endl;
+	/*std::cout << "ElonBullet::readyToDie() - scale values: x:" << scaleSize.x << ", y: " << scaleSize.y << std::endl;
+	std::cout << "ElonBullet::readyToDie() - result: " << (scaleSize.x <= 0.05 || scaleSize.y <= 0.05) << std::endl;*/
 	return (scaleSize.x <= 0.05 || scaleSize.y <= 0.05);
 }
 
