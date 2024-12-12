@@ -32,10 +32,10 @@ private:
     sf::Vector2f windowSize;
     sf::Vector2f size;
     sf::RenderWindow &window;
+
     std::vector<Prius> prii;
     std::vector<ElonBullet> elonBullets;
     std::vector<HolyObject> holyObjects;
-
 
     int score;
     int numOfChildren;

@@ -1,7 +1,6 @@
 #include "Scene1.h"
 using namespace sf;
 
-
 // TODO: work in the scoring system (confirm it's there)
 // TODO: work on a Holy Object display system using a map. the key will be the count, and its value the variant to use for the holy object.
 //		The display system will be map container stored as a member of Scene 1. use same varient textures mapped to the number as defined in Holy Object.
@@ -169,7 +168,7 @@ void Scene1::removePrius(std::vector<Prius>& vect, size_t pos)
 		} while (pos < vect.size() - 1); //terminate -- final result: [0 1 3 4 4]
 		vect.pop_back();
 	}
-	
+
 	/*else if (pos == vect.size() - 1) {
 		vect.pop_back();
 	}*/
