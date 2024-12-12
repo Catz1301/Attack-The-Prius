@@ -1,8 +1,16 @@
 #include "Scene1.h"
 using namespace sf;
 
+// TODO: work in the scoring system (confirm it's there)
+// TODO: work on a Holy Object display system using a map. the key will be the count, and its value the variant to use for the holy object.
+//		The display system will be map container stored as a member of Scene 1. use same varient textures mapped to the number as defined in Holy Object.
+// 
+
 Scene1::Scene1(RenderWindow& win) : window(win) {
-	
+	ending_prius = NULL;
+	health = NULL;
+	numOfChildren = NULL;
+	score = NULL;
 }
 
 void Scene1::loadScene() {
@@ -82,23 +90,30 @@ void Scene1::updateScene(Event &e, Time dt)
 
 	muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);
 	for (int i = 0; i < prii.size(); i++) {
-		prii[i].update(elonBullets, dt.asSeconds());
-		if (prii[i].attacked) {
-			if (prii[i].isDangerous()) {
-				//playerDamage?
-				health -= 5;
+		if (i < prii.size())
+			prii[i].update(elonBullets, dt.asSeconds());
+		if (i < prii.size()) {
+			if (prii[i].attacked) {
+				if (prii[i].isDangerous()) {
+					//playerDamage?
+					health -= 5;
+				}
+				else {
+					score++;
+				}
+				if (i < prii.size())
+					removePrius(prii, i);
+				makeNewPrius(prii);
+				continue;
 			}
-			else {
-				score++;
-			}
-			removePrius(prii, i);
-			makeNewPrius(prii);
-			continue;
 		}
-		if (prii[i].isOffScreen(window.getSize().x)) {
-			removePrius(prii, i);
-			makeNewPrius(prii);
-			score--;
+		if (i < prii.size()) {
+			if (prii[i].isOffScreen(window.getSize().x)) {
+				if (i < prii.size())
+					removePrius(prii, i);
+				makeNewPrius(prii);
+				score--;
+			}
 		}
 	}
 
@@ -108,15 +123,15 @@ void Scene1::updateScene(Event &e, Time dt)
 			removeElonBullet(elonBullets, i);
 			//break;
 		}
-		if (elonBullets.size() != 0)
-			elonBullets[i].draw(window);
 	}
 }
 
 void Scene1::drawScene()
 {
 	for (int i = 0; i < prii.size(); i++) {
-		prii[i].draw(window);
+		if (i < prii.size()) {
+			prii[i].draw(window);
+		}
 	}
 	for (int i = 0; i < elonBullets.size(); i++) {
 		elonBullets[i].draw(window);
@@ -127,9 +142,9 @@ void Scene1::drawScene()
 }
 
 void Scene1::unloadScene() {
-	delete& muskHeadTex;
-	delete& priusTransparentTex;
-	delete& missPriusTex;
+	//delete& muskHeadTex;
+	//delete& priusTransparentTex;
+	//delete& missPriusTex;
 	prii.clear();
 	elonBullets.clear();
 }
@@ -143,7 +158,7 @@ void Scene1::unloadScene() {
 ////////////////////////////////////////////////////////////////////////
 void Scene1::removePrius(std::vector<Prius>& vect, size_t pos)
 {
-	if (pos < vect.size() - 1 && pos >= 0) {
+	if (pos < vect.size() -1 && pos >= 0) {
 		do {
 			// Simulate a call. remove(prii, 2);
 			vect[pos] = vect[pos + 1]; // vect[2] = vect[3] -- true values (not starting on 0): vect[3] = vect[4]
@@ -153,10 +168,37 @@ void Scene1::removePrius(std::vector<Prius>& vect, size_t pos)
 		} while (pos < vect.size() - 1); //terminate -- final result: [0 1 3 4 4]
 		vect.pop_back();
 	}
+
 	/*else if (pos == vect.size() - 1) {
 		vect.pop_back();
 	}*/
 
+}
+
+void Scene1::removeAttackedPrius(std::vector<Prius>& vect) {
+	int markedIndex = -1;
+	for (int i = 0; i < vect.size(); i++) {
+		if (i < vect.size()) {
+			if (vect[i].attacked == true) {
+				markedIndex = i;
+			}
+		}
+	}
+
+	// n y n n n
+	// 0 1
+	// vect.begin() = 0
+	// vect.begin() + 1 = 1
+
+	/*
+	std::vector<int> numbers = {1, 2, 3, 4, 5};
+
+	// Remove the element at index 2 (which is the value 3)
+	if (numbers.size() > 2) {
+		numbers.erase(numbers.begin() + 2);
+	}
+	*/
+	vect.erase(vect.begin() + markedIndex);
 }
 
 void Scene1::makeNewPrius(std::vector<Prius>& vect, int q)
@@ -212,20 +254,21 @@ void Scene1::makeNewPrius(std::vector<Prius>& vect, int q)
 
 void Scene1::removeElonBullet(std::vector<ElonBullet>& vect, size_t pos)
 {
-	if (pos < vect.size() - 1 && pos >= 0) {
-		do {
-			// Simulate a call. remove(prii, 2);
-			vect[pos] = vect[pos + 1]; // vect[2] = vect[3] -- true values (not starting on 0): vect[3] = vect[4]
-			pos++;                     // pos = 3
-									   // vect[3] = vect[4]
-									   // pos = 4
-		} while (pos < vect.size() - 1); //terminate -- final result: [0 1 3 4 4]
-		vect.pop_back();
-	}
+	vect.erase(vect.begin() + pos);
+	//if (pos < vect.size() - 1 && pos >= 0) {
+	//	do {
+	//		// Simulate a call. remove(prii, 2);
+	//		vect[pos] = vect[pos + 1]; // vect[2] = vect[3] -- true values (not starting on 0): vect[3] = vect[4]
+	//		pos++;                     // pos = 3
+	//								   // vect[3] = vect[4]
+	//								   // pos = 4
+	//	} while (pos < vect.size() - 1); //terminate -- final result: [0 1 3 4 4]
+	//	vect.pop_back();
+	//}
 
-	else if (pos == vect.size() - 1) {
-		vect.pop_back();
-	}
+	//else if (pos == vect.size() - 1) {
+	//	vect.pop_back();
+	//}
 }
 
 void Scene1::makeNewElonBullet(std::vector<ElonBullet>& vect, float xPos, float yPos)
