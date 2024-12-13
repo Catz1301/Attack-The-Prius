@@ -2,13 +2,15 @@
 #define ELONBULLET_H
 
 #include <SFML/Graphics.hpp>
+#include "Prius.h"
 
 class ElonBullet {
 public:
 	ElonBullet(sf::Texture& texture, float x, float y);
 	virtual ~ElonBullet();
-	void update(float dt);
+	void update(std::vector<Prius>& vect, float dt);
 	void draw(sf::RenderWindow& target);
+	bool collidesWithPrius(std::vector<Prius>& vect);
 	bool readyToDie();
 	sf::Vector2f getScaleSize();
 	sf::Vector2f getTargetPoint();

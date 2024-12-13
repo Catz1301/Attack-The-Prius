@@ -2,21 +2,23 @@
 using namespace sf;
 
 // TODO: work in the scoring system (confirm it's there)
-// TODO: work on a Holy Object display system using a map. the key will be the count, and its value the variant to use for the holy object.
-//		The display system will be map container stored as a member of Scene 1. use same varient textures mapped to the number as defined in Holy Object.
+// TODO: Fine tune GUI.
 // 
+// -------- TOP PRIORITY --------
+// TODO: Work on holy object inventory count. it depletes far too quickly.
 
 Scene1::Scene1(RenderWindow& win) : window(win) {
 	ending_prius = NULL;
 	health = NULL;
-	numOfChildren = NULL;
+	availableHolyObjects = NULL;
 	score = NULL;
+	totalScore = 0;
 }
 
 void Scene1::loadScene() {
 	if (!muskHeadTex.loadFromFile("Resources/Images/elon_musk_cropped.png")) {
 		//throw std::exception("ERROR::MAIN::COULD_NOT_LOAD_TEXTURE");
-		std::cout << "ERROR::MAIN::COULD_NOT_LOAD_TEXTURE" << std::endl;
+		std::cout << "ERROR::SCENE1::COULD_NOT_LOAD_TEXTURE" << std::endl;
 	}
 	if (!priusTransparentTex.loadFromFile("Resources/Images/transparent_prius.png")) {
 		std::cout << "ERROR::SCENE1::COULD_NOT_LOAD_TEXTURE" << std::endl;
@@ -24,11 +26,12 @@ void Scene1::loadScene() {
 	if (!missPriusTex.loadFromFile("Resources/Images/detgen_prius.png")) {
 		std::cout << "ERROR::SCENE1::COULD_NOT_LOAD_TEXTURE" << std::endl;
 	}
+	gui.load();
 }
 
 void Scene1::initScene() {
 	score = 0;
-	numOfChildren = 3;
+	availableHolyObjects = 3;
 	ending_prius = -1;
 	health = 100;
 	size = Vector2f(50, 50);
@@ -43,7 +46,7 @@ void Scene1::initScene() {
 	for (int i = 0; i < 5; i++) {
 		makeNewPrius(prii);
 	}
-
+	gui.init((Vector2f) window.getSize());
 }
 
 void Scene1::updateScene(Event &e, Time dt)
@@ -82,7 +85,10 @@ void Scene1::updateScene(Event &e, Time dt)
 		}
 		else if (Mouse::isButtonPressed(Mouse::Button::Right)) { // for dangerous Prii
 			Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
-			makeNewElonBullet(elonBullets, mouse.x, mouse.y);
+			if (availableHolyObjects > 0) {
+				makeNewHolyObject(holyObjects, mouse.x, mouse.y);
+				availableHolyObjects--;
+			}
 			std::cout << "elonBullet_X: " << mouse.x << " | elonBullet_Y " << mouse.y << std::endl;
 			int topPrius = -1;
 		}
@@ -91,7 +97,7 @@ void Scene1::updateScene(Event &e, Time dt)
 	muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);
 	for (int i = 0; i < prii.size(); i++) {
 		if (i < prii.size())
-			prii[i].update(elonBullets, dt.asSeconds());
+			prii[i].update(dt.asSeconds());
 		if (i < prii.size()) {
 			if (prii[i].attacked) {
 				if (prii[i].isDangerous()) {
@@ -106,24 +112,48 @@ void Scene1::updateScene(Event &e, Time dt)
 				makeNewPrius(prii);
 				continue;
 			}
+			else if (prii[i].excorsized) {
+				if (i < prii.size())
+					removePrius(prii, i);
+			}
 		}
 		if (i < prii.size()) {
 			if (prii[i].isOffScreen(window.getSize().x)) {
 				if (i < prii.size())
 					removePrius(prii, i);
 				makeNewPrius(prii);
-				score--;
+				if (score > 0)
+					score--;
 			}
+		}
+
+		if (score != 0 && score % 5 == 0) {
+			totalScore += score;
+			score = 0;
+			availableHolyObjects++;
+			/*int size = holyObjectInventory.size();
+			int variant = std::rand() % 4;
+			holyObjectInventory.insert({ size, variant });*/
 		}
 	}
 
 	for (int i = 0; i < elonBullets.size(); ++i) {
-		elonBullets[i].update(dt.asSeconds());
+		elonBullets[i].update(prii, dt.asSeconds());
 		if (elonBullets[i].dead) {
 			removeElonBullet(elonBullets, i);
 			//break;
 		}
 	}
+
+	for (int i = 0; i < holyObjects.size(); ++i) {
+		holyObjects[i].update(prii, dt.asSeconds());
+		if (holyObjects[i].dead) {
+			removeHolyObject(holyObjects, i);
+			//break;
+		}
+	}
+
+	gui.update(totalScore, health, availableHolyObjects);
 }
 
 void Scene1::drawScene()
@@ -136,6 +166,14 @@ void Scene1::drawScene()
 	for (int i = 0; i < elonBullets.size(); i++) {
 		elonBullets[i].draw(window);
 	}
+	for (int i = 0; i < holyObjects.size(); i++) {
+		holyObjects[i].draw(window);
+	}
+
+	/*for (int i = 0; i < holyObjectInventory.size(); i++) {
+		
+	}*/
+	gui.draw(window);
 	window.draw(muskHead);
 
 	window.display();
@@ -185,19 +223,6 @@ void Scene1::removeAttackedPrius(std::vector<Prius>& vect) {
 		}
 	}
 
-	// n y n n n
-	// 0 1
-	// vect.begin() = 0
-	// vect.begin() + 1 = 1
-
-	/*
-	std::vector<int> numbers = {1, 2, 3, 4, 5};
-
-	// Remove the element at index 2 (which is the value 3)
-	if (numbers.size() > 2) {
-		numbers.erase(numbers.begin() + 2);
-	}
-	*/
 	vect.erase(vect.begin() + markedIndex);
 }
 
@@ -278,10 +303,10 @@ void Scene1::makeNewElonBullet(std::vector<ElonBullet>& vect, float xPos, float 
 
 void Scene1::removeHolyObject(std::vector<HolyObject>& vect, size_t pos)
 {
-	// TODO: Implement Method
+	vect.erase(vect.begin() + pos);
 }
 
 void Scene1::makeNewHolyObject(std::vector<HolyObject>& vect, float xPos, float yPos)
 {
-	// TODO: Implement Method
+	vect.push_back(HolyObject(xPos, yPos));
 }

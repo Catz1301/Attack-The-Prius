@@ -13,21 +13,15 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\Scene 1">
+      <UniqueIdentifier>{0a09dedd-3208-4652-9ba9-57c730e3b93e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Scene 1">
+      <UniqueIdentifier>{b5684681-0f19-4ea4-8d73-c09ef44ec13d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Prius.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ElonBullet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HolyObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
@@ -36,31 +30,49 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scene1.cpp">
+      <Filter>Source Files\Scene 1</Filter>
+    </ClCompile>
+    <ClCompile Include="Prius.cpp">
+      <Filter>Source Files\Scene 1</Filter>
+    </ClCompile>
+    <ClCompile Include="HolyObject.cpp">
+      <Filter>Source Files\Scene 1</Filter>
+    </ClCompile>
+    <ClCompile Include="ElonBullet.cpp">
+      <Filter>Source Files\Scene 1</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene1_GUI.cpp">
+      <Filter>Source Files\Scene 1</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Prius.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ElonBullet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HolyObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Prius.h">
+      <Filter>Header Files\Scene 1</Filter>
+    </ClInclude>
+    <ClInclude Include="HolyObject.h">
+      <Filter>Header Files\Scene 1</Filter>
+    </ClInclude>
+    <ClInclude Include="ElonBullet.h">
+      <Filter>Header Files\Scene 1</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene1.h">
+      <Filter>Header Files\Scene 1</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene1_GUI.h">
+      <Filter>Header Files\Scene 1</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

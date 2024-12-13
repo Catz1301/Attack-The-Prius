@@ -4,6 +4,7 @@
 #include "Prius.h"
 #include "ElonBullet.h"
 #include "HolyObject.h"
+#include "Scene1_GUI.h"
 class Scene1 :
     public Scene
 {
@@ -36,11 +37,16 @@ private:
     std::vector<Prius> prii;
     std::vector<ElonBullet> elonBullets;
     std::vector<HolyObject> holyObjects;
+    Scene1_GUI gui;
+    std::map<int, int> holyObjectInventory;
 
-    int score;
-    int numOfChildren;
+    unsigned int score;
+    int totalScore;
+    int availableHolyObjects;
     int ending_prius;
     int health;
+    bool givenHolyObject = false;
+    
 
 };
 

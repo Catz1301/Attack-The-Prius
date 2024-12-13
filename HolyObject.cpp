@@ -41,8 +41,39 @@ HolyObject::HolyObject(float x, float y)
 	holyObjectSprite.setPosition(x, y);
 }
 
+void HolyObject::update(std::vector<Prius>& vect, float dt)
+{
+	if (dead == true)
+		return;
+	scaleSize -= sf::Vector2f(0.03f, 0.03f);
+	holyObjectSprite.setScale(scaleSize);
+	size = sf::Vector2f(
+		holyObjectSprite.getGlobalBounds().width,
+		holyObjectSprite.getGlobalBounds().height
+	);
+	if (readyToDie() || collidesWithPrius(vect)) {
+		dead = true;
+
+	}
+}
+
+bool HolyObject::collidesWithPrius(std::vector<Prius>& vect) {
+	for (int i = 0; i < vect.size(); i++) {
+		sf::FloatRect intersection;
+		if (holyObjectSprite.getGlobalBounds().intersects(vect[i].getSprite().getGlobalBounds(), intersection)) {
+			vect[i].excorsized = true;
+			return true;
+		}
+	}
+	return false;
+}
+
 void HolyObject::draw(sf::RenderWindow& target) {
 	target.draw(holyObjectSprite);
+}
+
+bool HolyObject::readyToDie() {
+	return (scaleSize.x <= 0.05 || scaleSize.y <= 0.05);
 }
 
 HolyObject::~HolyObject()

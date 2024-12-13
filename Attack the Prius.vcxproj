@@ -299,6 +299,7 @@
     <ClCompile Include="Prius.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Scene1.cpp" />
+    <ClCompile Include="Scene1_GUI.cpp" />
     <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -309,6 +310,7 @@
     <ClInclude Include="resource1.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="Scene1.h" />
+    <ClInclude Include="Scene1_GUI.h" />
     <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <ItemGroup>

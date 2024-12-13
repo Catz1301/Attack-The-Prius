@@ -21,7 +21,7 @@ ElonBullet::~ElonBullet()
 }
 
 // Methods
-void ElonBullet::update(float dt)
+void ElonBullet::update(std::vector<Prius>& vect, float dt)
 {
 	if (dead == true)
 		return;
@@ -31,7 +31,7 @@ void ElonBullet::update(float dt)
 		elonBullet.getGlobalBounds().width,
 		elonBullet.getGlobalBounds().height
 	);
-	if (readyToDie()) {
+	if (readyToDie() || collidesWithPrius(vect)) {
 		dead = true;
 
 	}
@@ -40,6 +40,17 @@ void ElonBullet::update(float dt)
 void ElonBullet::draw(sf::RenderWindow& target)
 {
 	target.draw(elonBullet);
+}
+
+bool ElonBullet::collidesWithPrius(std::vector<Prius>& vect) {
+	for (int i = 0; i < vect.size(); i++) {
+		sf::FloatRect intersection;
+		if (elonBullet.getGlobalBounds().intersects(vect[i].getSprite().getGlobalBounds(), intersection)) {
+			vect[i].attacked = true;
+			return true;
+		}
+	}
+	return false;
 }
 
 bool ElonBullet::readyToDie()

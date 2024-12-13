@@ -1,7 +1,7 @@
 #ifndef PRIUS_H
 #define PRIUS_H
 
-#include "ElonBullet.h"
+//#include "ElonBullet.h"
 #include <SFML/Graphics.hpp>
 
 class Prius
@@ -30,7 +30,6 @@ private:
 public:
 	// Sets the color of the prius
 	void setColor(const sf::Color color);
-	void update(std::vector<ElonBullet>& vect, float dt);
 	// Update Prius
 	void update(float dt);
 	// Moves the Prius to the direction it's facing
@@ -41,8 +40,9 @@ public:
 	sf::Vector2f getSize();
 	sf::Vector2f getPosition();
 	bool getFacingLeft();
-	bool collidesWithBullet(std::vector<ElonBullet> &vect);
+	//bool collidesWithBullet(std::vector<ElonBullet> &vect);
 	bool attacked = false;
+	bool excorsized = false;
 
 private:
 	float speed;
