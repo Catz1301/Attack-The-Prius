@@ -18,38 +18,33 @@
 // Maybe holy water can help restore health
 
 // ------ LONG TERM TODO -------
-// TODO: Make a scene manager class
-// TODO: Move object makers and removers to an object management file.
 // TODO: Find demonic goat queen
 
+
+// ------ TOP PIORITY --------
 // TODO: Add a demonic goat queen strength bar in the bottom left corner.
 // TODO: Add a health bar at the bottom left corner, under strength bar.
 // TODO: Make game over state effective.
-
-// ------ TOP PIORITY --------
-// TODO: Properly calculate score, and award holy objects
-// TODO: Add a holy object count that displays a holy object for every holy object currently held. display under health
-// bar
 
 
 using namespace sf;
 
 sf::Vector2f windowSize;
 
-RenderWindow window(VideoMode::getDesktopMode(), "Attack the Prius!", Style::None | Style::Fullscreen, sf::ContextSettings(0, 0, 3, 1, 1, 0, false));
-// TODO: Hide cursor, so that Elon Musk appears to be the cursor. He is worthy. :)
+RenderWindow window(
+	VideoMode::getDesktopMode(),
+	"Attack the Prius!",
+	Style::None | Style::Fullscreen, // titlebar appearance, resize options
+	sf::ContextSettings(0, 0, 3, 1, 1, 0, false)
+);
+// TODO: Hide cursor, so that Elon Musk appears to be the cursor. He is worthy. :) // I question this 5 years later
 sf::Color meowColor = sf::Color(0, 0, 0);
 
 Vector2f size = Vector2f(50, 50);
 SceneManager sceneManager = SceneManager();
 
-//sf::Text priiScore;
-//sf::Font fnt;
 int main() {
 	
-	/*ContextSettings settings;
-	settings.antialiasingLevel = 3;*/
-
 	srand(time(0));
 	window.setFramerateLimit(60);
 	windowSize = Vector2f(window.getSize().x, window.getSize().y);
@@ -86,12 +81,3 @@ int main() {
 
 	return 0;
 }
-
-
-	////////////////////////////////////////////////////////////////////////
-	/// Moves all elements of vector vect (starting from pos) to the left.
-	/// This will result in two copies of the last element for a very short
-	/// time, but the last element of the vector will be removed in the next
-	/// instruction of the method.
-	////////////////////////////////////////////////////////////////////////
-	

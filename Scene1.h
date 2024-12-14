@@ -46,7 +46,7 @@ private:
     int ending_prius;
     int health;
     bool givenHolyObject = false;
-    
+    bool isMouseUp = true;
 
 };
 

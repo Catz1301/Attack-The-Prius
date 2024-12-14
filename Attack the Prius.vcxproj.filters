@@ -19,6 +19,12 @@
     <Filter Include="Header Files\Scene 1">
       <UniqueIdentifier>{b5684681-0f19-4ea4-8d73-c09ef44ec13d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Main Menu Scene">
+      <UniqueIdentifier>{fcc642f0-1c32-4bab-a9ce-183caacadd68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Main Menu Scene">
+      <UniqueIdentifier>{5cada8ad-d200-4193-b5e6-a939b69ab0d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Scene.cpp">

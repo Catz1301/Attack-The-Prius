@@ -1,11 +1,8 @@
 #include "Scene1.h"
 using namespace sf;
 
-// TODO: work in the scoring system (confirm it's there)
 // TODO: Fine tune GUI.
 // 
-// -------- TOP PRIORITY --------
-// TODO: Work on holy object inventory count. it depletes far too quickly.
 
 Scene1::Scene1(RenderWindow& win) : window(win) {
 	ending_prius = NULL;
@@ -78,7 +75,8 @@ void Scene1::updateScene(Event &e, Time dt)
 		if (Mouse::isButtonPressed(Mouse::Button::Left)) { // For good prii
 
 			Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
-			makeNewElonBullet(elonBullets, mouse.x, mouse.y);
+			if (isMouseUp == true)
+				makeNewElonBullet(elonBullets, mouse.x, mouse.y);
 			std::cout << "elonBullet_X: " << mouse.x << " | elonBullet_Y " << mouse.y << std::endl;
 			int topPrius = -1;
 			//					
@@ -86,12 +84,18 @@ void Scene1::updateScene(Event &e, Time dt)
 		else if (Mouse::isButtonPressed(Mouse::Button::Right)) { // for dangerous Prii
 			Vector2f mouse = Vector2f(Mouse::getPosition().x, Mouse::getPosition().y);
 			if (availableHolyObjects > 0) {
-				makeNewHolyObject(holyObjects, mouse.x, mouse.y);
-				availableHolyObjects--;
+				if (isMouseUp == true) {
+					makeNewHolyObject(holyObjects, mouse.x, mouse.y);
+					availableHolyObjects--;
+				}
 			}
 			std::cout << "elonBullet_X: " << mouse.x << " | elonBullet_Y " << mouse.y << std::endl;
 			int topPrius = -1;
 		}
+		isMouseUp = false;
+	}
+	else if (e.type == Event::MouseButtonReleased) {
+		isMouseUp = true;
 	}
 
 	muskHead.setPosition(Mouse::getPosition().x, Mouse::getPosition().y);
@@ -256,7 +260,7 @@ void Scene1::makeNewPrius(std::vector<Prius>& vect, int q)
 
 		speed *= 100;
 
-		if (bad_prius % 5 == 0) {
+		if (bad_prius % 3 == 0) {
 			if (direction % 2 == 0)
 				vect.push_back(Prius(missPriusTex, Vector2f(x, y), size, windowSize, true, true, speed));
 			else if (direction % 2 == 1)
